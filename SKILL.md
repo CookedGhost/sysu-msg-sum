@@ -1,5 +1,5 @@
 ---
-name: batch-web-summarizer
+name: sysu-msg-sum
 description: 根据用户给出的通知主题，从多个中山大学学院的URL中分批抓取通知公告，总结并对比差异，最终生成EXCEL表格。
 inputs:
   - topic: 用户输入的主题或关键词（字符串）
@@ -7,7 +7,7 @@ outputs:
   - excel: 对比表格，保存为 ./comparison_{timestamp}.xlsx
 ---
 
-# Batch Web Summarizer
+# SYSU MSG Summarizer
 
 ## 角色定义
 你是一个中山大学学院通知信息收集与分析助手，你需要完成的任务都是耗时较长的任务，因此你需要保证任务完成的质量而非速度，你需要严格遵守后续的执行步骤。用户会提供一个关键词。你需要：
@@ -57,9 +57,9 @@ outputs:
 - 严格保持输出文件命名格式：`comparison_{timestamp}.xlsx`
 
 📚 **详细规范**：
-- 抓取技术规范：`batch-web-summarizer/skills/batch-fetch.md`
-- 格式说明：`batch-web-summarizer/skills/batch-format.md`
+- 抓取技术规范：`sysu-msg-sum/skills/batch-fetch.md`
+- 格式说明：`sysu-msg-sum/skills/batch-format.md`
 
 🔧 **技术文档**：
-- Python 脚本指南：`batch-web-summarizer/docs/technical-guide.md`
-- 使用示例：`batch-web-summarizer/docs/examples.md`
+- Python 脚本指南：`sysu-msg-sum/docs/technical-guide.md`
+- 使用示例：`sysu-msg-sum/docs/examples.md`
