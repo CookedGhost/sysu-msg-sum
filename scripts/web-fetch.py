@@ -84,7 +84,7 @@ def fetch_detail_content(url: str, headers: dict = None) -> str:
     if HAS_BS4:
         soup = BeautifulSoup(raw, "html.parser")
         # Remove script, style
-        for tag in soup(["script", "style", "nav", "footer", "header", "aside"]):
+        for tag in soup(["script", "style", "nav", "footer", "header", "aside", "li", "ul", "a"]):
             tag.decompose()
         text = soup.get_text(separator="\n")
         return text
@@ -107,5 +107,25 @@ def save_fetch_content(url: str, output_filename: str, isdetail: bool):
     content = normalize_text(content)
     filename = TMP_DIR / f"{output_filename}.txt"
     with open(filename, "w", encoding="utf-8") as f:
+        f.write(f"URL: {url}\n\n")
         f.write(content)
     return filename
+
+def main():
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    parser = argparse.ArgumentParser(description="Fetch web page content")
+    parser.add_argument("url", help="URL of the web page to fetch")
+    parser.add_argument("--output", default=f"fetch_{timestamp}", help="Base name for output file (without extension)")
+    parser.add_argument("--detail", action="store_true", help="Fetch detailed content instead of navigation")
+    args = parser.parse_args()
+
+    ensure_dirs()
+    try:
+        filename = save_fetch_content(args.url, args.output, args.detail)
+        print(f"Content saved to: {filename}")
+    except Exception as e:
+        print(f"Error fetching content: {e}", file=sys.stderr)
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()

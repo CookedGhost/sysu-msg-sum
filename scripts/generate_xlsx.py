@@ -55,7 +55,7 @@ def jsonl_to_xlsx(jsonl_path, xlsx_path, other_msgs:[str]):
                 # 确保字段顺序一致
                 ordered_row = [row.get(f, '') for f in fieldnames]
                 print(f"{line_num}: {ordered_row}")
-            
+
                 rows.append(ordered_row)
             except json.JSONDecodeError as e:
                 print(f"警告: 第 {line_num} 行 JSON 解析失败: {e}", file=sys.stderr)
@@ -93,8 +93,8 @@ def jsonl_to_xlsx(jsonl_path, xlsx_path, other_msgs:[str]):
                 val_len = len(str(cell.value))
                 # 中文字符比例估算，简单处理：取字符数
                 max_len = max(max_len, val_len)
-        # 限制最大列宽 60，最小 10
-        adjusted_width = min(max(max_len // 2, 10), 60)
+        # 限制最大列宽 150，最小 30
+        adjusted_width = min(max(max_len // 2, 30), 150)
         ws.column_dimensions[col_letter].width = adjusted_width
 
     # 冻结首行
@@ -102,3 +102,13 @@ def jsonl_to_xlsx(jsonl_path, xlsx_path, other_msgs:[str]):
 
     wb.save(xlsx_path)
     print(f"✓ Excel 已保存至: {xlsx_path}")
+
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description="将 JSONL 文件转换为 Excel (.xlsx)，并对长文本列启用自动换行")
+    parser.add_argument("jsonl_path", help="输入 JSONL 文件路径")
+    parser.add_argument("xlsx_path", help="输出 Excel 文件路径")
+    parser.add_argument("--other_msgs", nargs='*', default=[], help="其他消息，作为独立行添加到表格末尾")
+    args = parser.parse_args()
+
+    jsonl_to_xlsx(args.jsonl_path, args.xlsx_path, args.other_msgs)
