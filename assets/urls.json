@@ -1,0 +1,26 @@
+{
+  "historyzh_dz": {
+    "url": "https://historyzh.sysu.edu.cn/dang",
+    "description": "历史学系（珠海）党群工作"
+  },
+  "mkszyxy_dz": {
+    "url": "https://mkszyxy.sysu.edu.cn/dwgz/dzgz/index.htm",
+    "description": "马克思主义学院党群工作"
+  },
+  "atmos_dz": {
+    "url": "https://atmos.sysu.edu.cn/Affairs",
+    "description": "大气科学学院党政综合"
+  },
+  "gs_dz": {
+    "url": "https://gs.sysu.edu.cn/dz",
+    "description": "地球科学与工程学院党政综合"
+  },
+  "soet_dz": {
+    "url": "https://soet.sysu.edu.cn/zh-hans/partyPolicy/notice",
+    "description": "海洋学院党政综合"
+  }
+  "sse_dq": {
+    "url": "https://sse.sysu.edu.cn/party",
+    "description": "软件工程学院党群工作"
+  }
+}
