@@ -1,0 +1,111 @@
+import argparse
+import hashlib
+import json
+import os
+import re
+import sys
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+from urllib.request import urlopen, Request
+from urllib.error import URLError, HTTPError
+from difflib import unified_diff
+
+try:
+    from bs4 import BeautifulSoup
+    HAS_BS4 = True
+except ImportError:
+    HAS_BS4 = False
+
+TMP_DIR = Path(os.environ.get("WEB_TMP_DIR", Path.home() / ".web-tmp"))
+
+def ensure_dirs():
+  TMP_DIR.mkdir(parents=True, exist_ok=True)
+
+def fetch_navi_content(url: str, headers: dict = None) -> str:
+    """获取页面导航信息"""
+    req_headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) web-monitor/1.0"
+    }
+    if headers:
+        req_headers.update(headers)
+
+    req = Request(url, headers=req_headers)
+    try:
+        with urlopen(req, timeout=30) as resp:
+            raw = resp.read().decode("utf-8", errors="replace")
+    except HTTPError as e:
+        raise RuntimeError(f"HTTP {e.code}: {e.reason}")
+    except URLError as e:
+        raise RuntimeError(f"Connection error: {e.reason}")
+
+    # Basic text extraction without bs4
+    if HAS_BS4:
+        soup = BeautifulSoup(raw, "html.parser")
+        # Remove script, style, nav, footer
+        for tag in soup(["script", "style", "nav", "footer", "header", "aside"]):
+            tag.decompose()
+        # 获取导航页面所有链接
+        all_links = soup.find_all('a')
+        content = []
+        _url = url.rstrip("/") if url.endswith("/") else url
+        for link in all_links:
+            if(link.get_text(strip=True) == ""):
+                continue
+            text = link.get_text(strip=True)
+            href = link.get('href', '')
+            if not href.startswith("http"):
+                href = _url + "/" + href.lstrip("/")
+            content.append(f"{text} ({href})")
+        return "\n".join(content)
+    else:
+        # Crude fallback: strip HTML tags
+        text = re.sub(r'<[^>]+>', ' ', raw)
+        text = re.sub(r'\s+', ' ', text).strip()
+        return text
+
+def fetch_detail_content(url: str, headers: dict = None) -> str:
+    """获取页面详细内容"""
+    req_headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) web-monitor/1.0"
+    }
+    if headers:
+        req_headers.update(headers)
+
+    req = Request(url, headers=req_headers)
+    try:
+        with urlopen(req, timeout=30) as resp:
+            raw = resp.read().decode("utf-8", errors="replace")
+    except HTTPError as e:
+        raise RuntimeError(f"HTTP {e.code}: {e.reason}")
+    except URLError as e:
+        raise RuntimeError(f"Connection error: {e.reason}")
+
+    if HAS_BS4:
+        soup = BeautifulSoup(raw, "html.parser")
+        # Remove script, style
+        for tag in soup(["script", "style", "nav", "footer", "header", "aside"]):
+            tag.decompose()
+        text = soup.get_text(separator="\n")
+        return text
+    else:
+        # Crude fallback: strip HTML tags
+        text = re.sub(r'<[^>]+>', ' ', raw)
+        text = re.sub(r'\s+', ' ', text).strip()
+        return text
+
+def normalize_text(text: str) -> str:
+    lines = text.split("\n")
+    lines = [re.sub(r'\s+', ' ', line.strip()) for line in lines if line.strip()]
+    return "\n".join(lines)
+
+def save_fetch_content(url: str, output_filename: str, isdetail: bool):
+    if isdetail:
+        content = fetch_detail_content(url)
+    else:
+        content = fetch_navi_content(url)
+    content = normalize_text(content)
+    filename = TMP_DIR / f"{output_filename}.txt"
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write(content)
+    return filename
