@@ -45,7 +45,11 @@ def fetch_navi_content(url: str, headers: dict = None) -> str:
         # Remove script, style, nav, footer
         for tag in soup(["script", "style", "nav", "footer", "header", "aside"]):
             tag.decompose()
-        # 获取导航页面所有链接
+        # 移除footer
+        for div in soup.find_all('div', id='footer'):
+            div.decompose()
+
+        # 获取剩余跳转链接
         all_links = soup.find_all('a')
         content = []
         _url = url.rstrip("/") if url.endswith("/") else url
@@ -54,6 +58,9 @@ def fetch_navi_content(url: str, headers: dict = None) -> str:
                 continue
             text = link.get_text(strip=True)
             href = link.get('href', '')
+            # 跳过非具体文章的链接
+            if not href.endswith(tuple("0123456789")):
+                continue
             if not href.startswith("http"):
                 href = _url + "/" + href.lstrip("/")
             content.append(f"{text} ({href})")
@@ -81,12 +88,15 @@ def fetch_detail_content(url: str, headers: dict = None) -> str:
     except URLError as e:
         raise RuntimeError(f"Connection error: {e.reason}")
 
+
     if HAS_BS4:
         soup = BeautifulSoup(raw, "html.parser")
         # Remove script, style
-        for tag in soup(["script", "style", "nav", "footer", "header", "aside"]):
+        for tag in soup(["script", "style", "nav", "footer", "header", "aside", "li", "ul", "a"]):
             tag.decompose()
+        print(soup.prettify())
         text = soup.get_text(separator="\n")
+
         return text
     else:
         # Crude fallback: strip HTML tags
