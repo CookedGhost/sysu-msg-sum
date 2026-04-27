@@ -7,6 +7,7 @@ import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import urlparse
 from urllib.request import urlopen, Request
 from urllib.error import URLError, HTTPError
 from difflib import unified_diff
@@ -52,17 +53,20 @@ def fetch_navi_content(url: str, headers: dict = None) -> str:
         # 获取剩余跳转链接
         all_links = soup.find_all('a')
         content = []
-        _url = url.rstrip("/") if url.endswith("/") else url
+        urlparse_url = urlparse(url)
+        base_url = f"{urlparse_url.scheme}://{urlparse_url.netloc}"
         for link in all_links:
             if(link.get_text(strip=True) == ""):
                 continue
             text = link.get_text(strip=True)
             href = link.get('href', '')
+
             # 跳过非具体文章的链接
             if not href.endswith(tuple("0123456789")):
                 continue
+
             if not href.startswith("http"):
-                href = _url + "/" + href.lstrip("/")
+                href = base_url + "/" + href.lstrip("/")
             content.append(f"{text} ({href})")
         return "\n".join(content)
     else:
