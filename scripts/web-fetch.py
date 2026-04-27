@@ -84,7 +84,7 @@ def fetch_detail_content(url: str, headers: dict = None) -> str:
     if HAS_BS4:
         soup = BeautifulSoup(raw, "html.parser")
         # Remove script, style
-        for tag in soup(["script", "style", "nav", "footer", "header", "aside", "li", "ul", "a"]):
+        for tag in soup(["script", "style", "nav", "footer", "header", "aside"]):
             tag.decompose()
         text = soup.get_text(separator="\n")
         return text
