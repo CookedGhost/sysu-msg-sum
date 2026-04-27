@@ -98,9 +98,28 @@ python scripts/web-fetch.py <article_url> --detail --output <临时文件名>
 }
 ```
 
-你可以查看 `scripts/helper.py` 脚本，该脚本中预留了输入信息字段 `input_json_data`，你需要按照格式填写好信息，并执行脚本将数据写入 JSONL 文件。
+将每条记录整理成 JSON 格式，**立即追加写入** JSONL 文件。
+
+**推荐方式（使用 write 工具追加模式）：**
+
+每处理完一条记录后，立即使用 write 工具将该 JSON 对象追加到文件末尾。例如，在提取完一条记录后：
+
+```
+{"学院":"计算机学院","原始链接":"https://...","标题":"...","核心摘要":"...","发布日期":"2025-11-17"}
+```
+
+立即执行写入操作（追加模式），将此 JSON 对象追加到 `.temp/notices_{timestamp}.jsonl` 文件。
+
+**注意**：
+- 每条记录为一行，以换行符 `\n` 结尾
+- 使用追加模式写入，不要覆盖已有内容
+- 处理完一条记录后立即写入，不要等到最后批量写入
+
+**备用方式（使用 helper.py 脚本）：**
+
+你也可以修改 `scripts/helper.py` 中的 `input_json_data` 变量，然后运行：
 ```bash
-python scripts/helper.py .temp/notices_{timestamp}.jsonl
+python scripts/helper.py .temp/notices_{timestamp}.jsonl --append
 ```
 
 #### 2.5 使用 `web-fetch.py` 的具体命令
@@ -172,14 +191,9 @@ python scripts/generate_xlsx.py .temp/notices_20250427_143022.jsonl output/compa
 - 同时在对话中输出一条摘要信息，说明总共抓取到多少条通知、涉及多少学院，并附上 Excel 文件路径。
 
 ### 错误处理与重试
-- 对于某个根 URL 的首次请求（`web-fetch`）失败（超时、403、404），记录错误并跳过该站点，继续下一个。
+- 对于某个信息板块 URL 的首次请求（`web-fetch`）失败（超时、403、404），记录错误并跳过该站点，继续下一个。
 - 若子链接抓取失败，记录该链接 URL 并跳过，不影响同一站点的其他链接。
 - 所有失败信息可记录到一个单独的 `error_{timestamp}.log` 文件中。
-
-### 性能与深度控制
-- 每个根 URL 最多访问 10 个页面（包括首页和子链接），防止无限循环。
-- 每一层选择最多 2 个子链接（因为首页通常栏目较多，但 2 个足够覆盖主要通知板块）。
-- 70 个学院 × 平均 5 个页面 ≈ 350 次请求，预计可在合理时间内完成。如果部分站点响应慢，适当增加延迟（time.sleep(1)）。
 
 ### 示例执行指令
 用户输入：
