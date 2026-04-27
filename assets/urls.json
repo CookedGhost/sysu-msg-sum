@@ -1,26 +1,82 @@
 {
-  "historyzh_dz": {
-    "url": "https://historyzh.sysu.edu.cn/dang",
-    "description": "历史学系（珠海）党群工作"
+  "chinesezh": {
+    "url": "https://chinesezh.sysu.edu.cn/",
+    "description": "中国语言文学系（珠海）"
   },
-  "mkszyxy_dz": {
-    "url": "https://mkszyxy.sysu.edu.cn/dwgz/dzgz/index.htm",
-    "description": "马克思主义学院党群工作"
+  "phil-zh": {
+    "url": "https://phil-zh.sysu.edu.cn/",
+    "description": "哲学系（珠海）"
   },
-  "atmos_dz": {
-    "url": "https://atmos.sysu.edu.cn/Affairs",
-    "description": "大气科学学院党政综合"
+  "sti": {
+    "url": "https://sti.sysu.edu.cn/",
+    "description": "国际翻译学院"
   },
-  "gs_dz": {
-    "url": "https://gs.sysu.edu.cn/dz",
-    "description": "地球科学与工程学院党政综合"
+  "stm": {
+    "url": "https://stm.sysu.edu.cn/",
+    "description": "旅游学院"
   },
-  "soet_dz": {
-    "url": "https://soet.sysu.edu.cn/zh-hans/partyPolicy/notice",
-    "description": "海洋学院党政综合"
+  "spa": {
+    "url": "https://spa.sysu.edu.cn/",
+    "description": "物理与天文学院"
   },
-  "sse_dq": {
-    "url": "https://sse.sysu.edu.cn/party",
-    "description": "软件工程学院党群工作"
+  "marine": {
+    "url": "https://marine.sysu.edu.cn/",
+    "description": "海洋科学学院"
+  },
+  "cet": {
+    "url": "https://cet.sysu.edu.cn/",
+    "description": "化学工程与技术学院"
+  },
+  "ifcen": {
+    "url": "https://ifcen.sysu.edu.cn/",
+    "description": "中法核工程与技术学院"
+  },
+  "mst": {
+    "url": "https://mst.sysu.edu.cn/",
+    "description": "微电子科学与技术学院"
+  },
+  "sai": {
+    "url": "https://sai.sysu.edu.cn/",
+    "description": "人工智能学院"
+  },
+  "historyzh": {
+    "url": "https://historyzh.sysu.edu.cn/",
+    "description": "历史学系（珠海）"
+  },
+  "isbf": {
+    "url": "https://isbf.sysu.edu.cn/",
+    "description": "国际金融学院"
+  },
+  "mathzh": {
+    "url": "https://mathzh.sysu.edu.cn/",
+    "description": "数学学院（珠海）"
+  },
+  "atmos": {
+    "url": "https://atmos.sysu.edu.cn/",
+    "description": "大气科学学院"
+  },
+  "gs": {
+    "url": "https://gs.sysu.edu.cn/",
+    "description": "地球科学与工程学院"
+  },
+  "soet": {
+    "url": "https://soet.sysu.edu.cn/",
+    "description": "海洋工程与技术学院"
+  },
+  "civil": {
+    "url": "https://civil.sysu.edu.cn/",
+    "description": "土木工程学院"
+  },
+  "sges": {
+    "url": "https://sges.sysu.edu.cn/",
+    "description": "遥感科学与技术学院"
+  },
+  "sse": {
+    "url": "https://sse.sysu.edu.cn/",
+    "description": "软件工程学院"
+  },
+  "sir": {
+    "url": "https://sir.sysu.edu.cn/",
+    "description": "国际关系学院"
   }
 }
