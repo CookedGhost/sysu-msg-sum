@@ -98,7 +98,6 @@ def fetch_detail_content(url: str, headers: dict = None) -> str:
         # Remove script, style
         for tag in soup(["script", "style", "nav", "footer", "header", "aside", "li", "ul", "a"]):
             tag.decompose()
-        print(soup.prettify())
         text = soup.get_text(separator="\n")
 
         return text
@@ -116,6 +115,7 @@ def normalize_text(text: str) -> str:
 def save_fetch_content(url: str, output_filename: str, isdetail: bool):
     if isdetail:
         content = fetch_detail_content(url)
+        print(content)
     else:
         content = fetch_navi_content(url)
     content = normalize_text(content)
