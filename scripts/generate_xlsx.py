@@ -54,7 +54,7 @@ def jsonl_to_xlsx(jsonl_path, xlsx_path, other_msgs:[str]):
                     fieldnames = list(row.keys())
                 # 确保字段顺序一致
                 ordered_row = [row.get(f, '') for f in fieldnames]
-                print(f"{line_num}: {ordered_row}")
+                # print(f"{line_num}: {ordered_row}")
 
                 rows.append(ordered_row)
             except json.JSONDecodeError as e:
@@ -68,19 +68,18 @@ def jsonl_to_xlsx(jsonl_path, xlsx_path, other_msgs:[str]):
     ws = wb.active
     ws.title = "对比结果"
 
+    for msg in other_msgs:
+        ws.append([msg])
+
     # 写入表头
     for col_idx, header in enumerate(fieldnames, start=1):
-        cell = ws.cell(row=1, column=col_idx, value=header)
+        cell = ws.cell(row=len(other_msgs)+1, column=col_idx, value=header)
         cell.font = Font(bold=True)          # 粗体
         cell.alignment = Alignment(horizontal='center', vertical='center')  # 居中
 
     # 写入数据
     for row in rows:
         ws.append(row)
-
-    for msg in other_msgs:
-        ws.append([msg])
-        ws.merge_cells(start_row=ws.max_row, start_column=1,end_row=ws.max_row, end_column=ws.max_column)
 
     # 设置自动换行和列宽
     for col in ws.columns:
@@ -97,8 +96,13 @@ def jsonl_to_xlsx(jsonl_path, xlsx_path, other_msgs:[str]):
         adjusted_width = min(max(max_len // 2, 30), 150)
         ws.column_dimensions[col_letter].width = adjusted_width
 
-    # 冻结首行
-    ws.freeze_panes = 'A2'
+    # 合并other_msgs行
+    for row_idx in range(1, len(other_msgs) + 1):
+        ws.merge_cells(start_row=row_idx, start_column=1, end_row=row_idx, end_column=len(fieldnames))
+        ws.row_dimensions[row_idx].height = 30  # 增加行高以适应多行文本
+
+    # 冻结首行（数据行的第一行）和其他消息行的最后一行
+    ws.freeze_panes = f'A{len(other_msgs)+1}'
 
     wb.save(xlsx_path)
     print(f"✓ Excel 已保存至: {xlsx_path}")
