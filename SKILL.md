@@ -42,8 +42,21 @@ outputs:
 
 ```json
 [
-  "https://cse.sysu.edu.cn/graduate/inform",
-  "https://sese.sysu.edu.cn/taxonomy/term/154",
+  {
+    "url": "https://civil.sysu.edu.cn/graduate-education",
+    "dep": "土木工程学院",
+    "description": "研究生教务信息板块"
+  },
+  {
+    "url": "https://sges.sysu.edu.cn/teach/graduate/inform",
+    "dep": "遥感科学与技术学院",
+    "description": "研究生教务信息板块"
+  },
+  {
+    "url": "https://sir.sysu.edu.cn/zh-hans/edu_notice/postgraduate",
+    "dep": "国际关系学院",
+    "description": "研究生教务信息板块"
+  },
   ...
 ]
 ```
@@ -67,16 +80,17 @@ outputs:
 
 工作目录：/workspace/projects/workspace/skills/sysu-msg-sum
 
-**【重要提示】**你有充足的时间完成这项任务。不要急于求成，确保每个步骤都执行到位。
+**【重要提示】**这项任务花费的时间可能会超过半个小时，但是你有充足的时间完成这项任务。不要急于求成，确保每个步骤都执行到位。
+
+**【强制要求】**必须使用 shell 的 echo >> 方式立即写入每条记录
+**【禁止】**在内存中累积大量详细记录
+**【禁止】**为了加快处理速度而不按照要求执行任务
 
 **【质量要求】**请确保每一步都仔细执行，保证任务完成的高质量：
 - 准确提取学院名称、标题、发布日期
 - 核心摘要要精炼（200字以内）且与主题密切相关
 - JSON 格式必须正确（注意转义双引号）
 - 遇到无相关文章的学院，也要明确记录
-
-**【强制要求】**必须使用 shell 的 echo >> 方式立即写入每条记录
-**【禁止】**在内存中累积记录后一次性写入
 
 **执行步骤**：
 
