@@ -75,6 +75,9 @@ outputs:
 - JSON 格式必须正确（注意转义双引号）
 - 遇到无相关文章的学院，也要明确记录
 
+**【强制要求】**必须使用 shell 的 echo >> 方式立即写入每条记录
+**【禁止】**在内存中累积记录后一次性写入
+
 **执行步骤**：
 
 1. 读取 assets/urls.json 获取所有学院信息板块 URL
@@ -116,9 +119,11 @@ outputs:
 ```
 
 **主代理行为**：
-- 使用 `sessions_spawn(mode="run", runtime="subagent")` 创建子代理
+- 使用 `sessions_spawn(mode="session", runtime="subagent")` 创建持久会话的子代理
+- 子代理完成任务前，每隔 2~3 分钟查看任务执行进度，并检查其是否在内存中累积超过5条 JSON 记录还未写入，如果是则立刻让其进行记录
 - 等待子代理完成整个抓取任务
-- 子代理完成后，继续执行第三阶段的汇总分析
+- 子代理完成后，通过 `subagents(action="kill", target="agent:main:subagent:xxx")` 结束持久会话
+- 继续执行第三阶段的汇总分析
 
 #### 验证抓取结果
 
