@@ -138,7 +138,6 @@ python scripts/generate_xlsx.py .temp/notices_{timestamp}.jsonl output/compariso
 ```
 
 - 输出文件将保存在 output/ 目录下（若不存在则创建）。
-- Excel 表头为：["学院", "原始链接", "标题", "核心摘要", "发布日期", "抓取深度"]（实际字段以 JSONL 中为准）。
 - 表头自动加粗居中，长文本自动换行，列宽自适应。
 - 额外的对比消息会以合并单元格的形式追加在数据下方。
 
