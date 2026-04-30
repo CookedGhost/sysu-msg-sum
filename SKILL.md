@@ -25,6 +25,7 @@ outputs:
 - 确保 `scripts/` 目录下已包含：`web-fetch.py`、`helper.py`、`generate_xlsx.py`。
 - 确保已安装 Python 依赖：`beautifulsoup4`、`openpyxl`（若无则提示用户安装）。
 - Skill 目录结构示例：
+```
   sysu-msg-sum/
   ├── SKILL.md
   ├── assets/
@@ -33,6 +34,7 @@ outputs:
   ├── web-fetch.py
   ├── helper.py
   └── generate_xlsx.py
+```
 
 ## 执行步骤
 
@@ -112,7 +114,8 @@ outputs:
     ```bash
     python scripts/web-fetch.py <文章URL> --detail --output temp_<随机后缀>
     ```
-    读取终端输出或是详细内容文件，提取以下 5 个字段：
+    读取终端输出或是详细内容文件，如果原始文本中存在 `"`, `\` 等特殊字符，需要进行转义
+    转义后从内容中提取以下 5 个字段：
     - "学院"：从信息板块根 URL 或链接文本中推断学院名称（例如"计算机学院"）
     - "原始链接"：文章的完整 URL
     - "标题"：从文章内容或链接文本中提取的通知标题
