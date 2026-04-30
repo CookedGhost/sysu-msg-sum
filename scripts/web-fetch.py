@@ -115,7 +115,6 @@ def normalize_text(text: str) -> str:
 def save_fetch_content(url: str, output_filename: str, isdetail: bool):
     if isdetail:
         content = fetch_detail_content(url)
-        print(content)
     else:
         content = fetch_navi_content(url)
     content = normalize_text(content)
